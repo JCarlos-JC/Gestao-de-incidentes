@@ -2,67 +2,53 @@
 
 @section('content')
 <div class="container">
-    <div class="card bg-secondary shadow">
-        <div class="card-body">
-            <div class="card bg-light rounded">
-                <div class="card-body">
+    
                     <div class="row mb-3">
+                        <h1 class="my-2">Lista de Incidentes</h1>
                         <div class="col-md-6 offset-md-6">
                             <!-- Botão "Novo" -->
                             <div class="d-flex justify-content-end">
-                                <a href="{{ route('incidentes.create') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Novo</a>
+                                <a href="{{ route('incidentes.create') }}" class="btn btn-success"> Novo</a>
                             </div>
                         </div>
                     </div>
 
-                    <h1>Lista de Incidentes</h1>
                     <div class="row">
-                        <div class="col-md-6 offset-md-3">
-                            <!-- Barra de pesquisa -->
-                            <form id="searchForm" action="{{ route('search.incidentes') }}" method="GET" class="form-inline justify-content-center">
-                                <div class="input-group">
-                                    <input id="searchInput" type="text" class="form-control" placeholder="Pesquisar por descrição" name="search" value="{{ request()->get('search') }}">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Pesquisar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10 mx-auto">
+                        <div class="col-md-12 mx-auto">
                             <div id="incidenteData" class="table-responsive">
                                 <table class="table table-striped">
-                                    <thead class="bg-primary text-white">
+                                    <thead class="bg-success text-white">
                                         <tr>
-                                            <th class="text-center">Descrição</th>
-                                            <th class="text-center">Arquivo</th>
-                                            <th class="text-center">Local</th>
-                                            <th class="text-center">Nome</th>
-                                            <th class="text-center">Pessoa de Contato</th>
-                                            <th class="text-center">Nível</th>
-                                            <th class="text-center">Estado</th>
-                                            <th class="text-center" colspan="3">Ações</th>
+                                            <th >Descrição</th>
+                                            <th >Arquivo</th>
+                                            <th >Local</th>
+                                            <th class="text-center" >Nome</th>
+                                            <th >Contato</th>
+                                            <th >Nível</th>
+                                            <th >Estado</th>
+                                            <th  colspan="3">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($incidentes as $incidente)
                                             <tr>
                                                 <td>{{ $incidente->descricao }}</td>
-                                                <td>{{ $incidente->arquivo }}</td>
+                                                <td>{{ $incidente->arquivo }}</td> <!--configurar para poder receber aquivos e criar uma logica de armazenamento no storage ou public e na base de dados  -->
                                                 <td>{{ $incidente->local }}</td>
-                                                <td>{{ $incidente->nome }}</td>
-                                                <td>{{ $incidente->pessoa_contacto }}</td>
+                                                <td class="text-center"  >{{ $incidente->nome }}</td>
+                                                <td>{{ $incidente->pessoa_contacto }}</td>  <!-- apagar na migration o 'pessoa_contacto' para contanto somente -->
                                                 <td>{{ $incidente->nivel }}</td>
-                                                <td>{{ $incidente->estado ? 'Ativo' : 'Inativo' }}</td>
+                                                <td>{{ $incidente->estado ? 'Ativo' : 'Inativo' }}</td>  <!--aplicar tres estados como pendente, em curso e concluido... em que ele so deve receber o feedback do departamento -->
+                                                <!-- <td>{{ $incidente->alocar }}</td> alocar incidentes para o departamento atraves de um clique que o helpdesk for a efetuar  -->
                                                 <td>
-                                                    <a href="{{ route('incidentes.show', $incidente->id) }}" class="btn btn-info"><i class="fas fa-eye"></i> Visualizar</a>
-                                                    <a href="{{ route('incidentes.edit', $incidente->id) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                                                    <a href="{{ route('associardep.associar', $incidente->id) }}" class="btn btn-warning"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ route('incidentes.show', $incidente->id) }}" class="btn btn-warning"><i class="fas fa-eye"></i></a>
+
+                                                    <a href="{{ route('incidentes.edit', $incidente->id) }}" class="btn btn-primary"><i class="fas fa-edit"></i> </a>
                                                     <form action="{{ route('incidentes.destroy', $incidente->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Excluir</button>
+                                                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> </button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -76,10 +62,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -119,3 +102,5 @@
 </script>
 
 @endsection
+
+<!-- Essa e a view de parametrizacao na qual os criterios definidos a cima poderam constar em uma outra view de visualizacao -->

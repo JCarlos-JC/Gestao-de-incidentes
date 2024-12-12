@@ -39,7 +39,7 @@ class IncidenteController extends Controller
         // Validação dos dados do formulário
         $request->validate([
             'descricao' => 'required|string',
-            'arquivo' => 'required|string',
+            'arquivo' => 'required|file',
             'local' => 'required|string',
             'nome' => 'required|string',
             'pessoa_contacto' => 'required|string',
@@ -47,8 +47,21 @@ class IncidenteController extends Controller
             'estado' => 'required|boolean',
         ]);
 
+        $arquivoOriginalNome = $request->file('arquivo')->getClientOriginalName();
+        $path = $request->file('arquivo')->storeAs('uploads', $arquivoOriginalNome); 
+
         // Criação do incidente
-        Incidente::create($request->all());
+    
+           Incidente::create([
+            'descricao' => $request->descricao,
+            'local' => $request->local, // Correção aqui
+            'nome' => $request->nome,
+            'pessoa_contacto' => $request->pessoa_contacto,
+            'arquivo' => $arquivoOriginalNome,
+            'nivel' => $request->nivel,
+            'estado' => $request->estado,
+        ]);
+
 
         return redirect()->route('incidentes.index')
                          ->with('success', 'Incidente criado com sucesso.');
@@ -90,7 +103,7 @@ class IncidenteController extends Controller
         // Validação dos dados do formulário
         $request->validate([
             'descricao' => 'required|string',
-            'arquivo' => 'required|string',
+            'arquivo' => 'required|file',
             'local' => 'required|string',
             'nome' => 'required|string',
             'pessoa_contacto' => 'required|string',
@@ -101,6 +114,7 @@ class IncidenteController extends Controller
         // Busca e atualiza o incidente
         $incidente = Incidente::findOrFail($id);
         $incidente->update($request->all());
+        
 
         return redirect()->route('incidentes.index')
                          ->with('success', 'Incidente atualizado com sucesso.');

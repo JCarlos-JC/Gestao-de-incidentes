@@ -17,4 +17,6 @@ class Incidente extends Model
     'nivel',
     'estado',
     ];
+
+    
 }

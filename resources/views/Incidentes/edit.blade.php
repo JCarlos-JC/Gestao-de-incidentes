@@ -14,7 +14,7 @@
             </div>
             <div class="form-group">
                 <label for="arquivo">Arquivo:</label>
-                <input type="text" name="arquivo" class="form-control" value="{{ $incidente->arquivo }}">
+                <input type="file" name="arquivo" id="arquivo"class="form-control-file" value="{{ $incidente->arquivo }}">
             </div>
             <div class="form-group">
                 <label for="local">Local:</label>

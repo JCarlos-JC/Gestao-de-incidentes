@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IncidenteController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\TecnicoController;
+use App\Http\Controllers\AssociardepartamentoController;
+use App\Http\Controllers\AssociartecnicooController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,23 @@ Route::put('/incidentes/{incidente}', [IncidenteController::class, 'update'])->n
 Route::delete('/incidentes/{incidente}', [IncidenteController::class, 'destroy'])->name('incidentes.destroy');
 
 Route::get('/incidentes/search', [IncidenteController::class, 'search'])->name('search.incidentes');
+
+// Associar um encidente ao departamento
+Route::get('/Departamentos/associarDep/{id}', [AssociardepartamentoController::class, 'edit'])->name('associardep.associar');
+Route::get('/AssociardepartamentoController', [AssociardepartamentoController::class,'buscarDepartamentos']);
+Route::post('/Departamentos/associarDep', [AssociardepartamentoController::class, 'store']);
+Route::get('/Departamentos/verAssociarDep', [AssociardepartamentoController::class, 'visualizarAssociacao']);
+
+// Associar um encidente do departamento ao tecnico
+Route::get('/Tecnicos/associarTec/{id}', [AssociartecnicooController::class, 'edit'])->name('associarTec.associar');
+Route::get('/AssociartecnicooController', [AssociartecnicooController::class,'buscarTecnicos']);
+Route::post('/Tecnicos/associarTec', [AssociartecnicooController::class, 'store']);
+
+
+
+
+//Route::get('/events/{id}', [EventosController::class, 'show'] );
+//Route::get('/igreja/EditarMembro/{id}',  [IgrejaController::class,'edit'] )->middleware(['auth']);
 
 
 
